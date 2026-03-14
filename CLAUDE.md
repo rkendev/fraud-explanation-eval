@@ -9,7 +9,7 @@
 - **Stack**: Python 3.12, XGBoost, SHAP, LangGraph, FastAPI, LiteLLM,
              Instructor+Pydantic v2, Prometheus, Docker Compose, Pytest+VCR.py
 - **Dataset**: IEEE-CIS Fraud Detection (Kaggle) — named features, rich context
-- **Current Phase**: 0 — Scaffold  ← UPDATE via: make advance-phase PHASE="N — Name"
+- **Current Phase**: 0 — Scaffold ✅
 - **CI Status**: ⏳ pending first push  ← UPDATE: ✅ GREEN or ❌ RED
 
 ### Non-Negotiable Rules

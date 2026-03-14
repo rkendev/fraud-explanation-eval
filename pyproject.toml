@@ -1,9 +1,9 @@
 [tool.poetry]
+package-mode = false
 name = "fraud-explanation-eval"
 version = "0.1.0"
 description = "XGBoost fraud detection with SHAP-grounded LLM explanation evaluation"
 authors = ["Roy"]
-python = "^3.12"
 
 [tool.poetry.dependencies]
 python = "^3.12"

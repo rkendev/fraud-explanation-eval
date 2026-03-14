@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 INJECTION_PATTERNS: Final[list[str]] = [
     r"ignore\s+(previous|all|prior)\s+instructions",
-    r"disregard\s+(your|the|all)\s+(previous|instructions|rules)",
+    r"disregard\s+(your|the|all)?\s*(previous|instructions|rules)",
     r"you\s+are\s+now\s+a",
     r"system\s*prompt",
     r"act\s+as\s+(if\s+you\s+are|a)\s+\w+",
