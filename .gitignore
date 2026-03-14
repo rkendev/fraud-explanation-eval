@@ -1,0 +1,15 @@
+data/raw/
+data/processed/
+models/artifacts/
+logs/
+*.csv
+*.parquet
+cost_log.jsonl
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+*.egg-info/
