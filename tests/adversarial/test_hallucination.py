@@ -3,9 +3,12 @@
 These tests verify the schema-level enforcement of hallucination constraints.
 They do NOT require a live LLM — they test the Pydantic validators directly.
 """
+
 from __future__ import annotations
+
 import pytest
 from pydantic import ValidationError
+
 from src.schemas.explanation import ExplanationResult
 
 

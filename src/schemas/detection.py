@@ -1,15 +1,18 @@
 """Fraud detection result schema — output of XGBoost + SHAP."""
-from __future__ import annotations
-from typing import Optional, Literal, Any
-from pydantic import BaseModel, field_validator, model_validator
-import os
 
+from __future__ import annotations
+
+import os
+from typing import Any, Literal
+
+from pydantic import BaseModel, field_validator, model_validator
 
 FRAUD_THRESHOLD = float(os.getenv("FRAUD_THRESHOLD", "0.5"))
 
 
 class SHAPFeature(BaseModel):
     """Single SHAP feature attribution."""
+
     feature_name: str
     shap_value: float  # signed — positive pushes toward fraud
     feature_value: Any  # actual value from transaction
@@ -17,6 +20,7 @@ class SHAPFeature(BaseModel):
 
 class FraudDetectionResult(BaseModel):
     """Output of DetectorModel: XGBoost prediction + SHAP attribution."""
+
     transaction_id: str
     fraud_probability: float
     is_fraud_predicted: bool
@@ -40,7 +44,7 @@ class FraudDetectionResult(BaseModel):
         return v
 
     @model_validator(mode="after")
-    def confidence_tier_consistent_with_probability(self) -> "FraudDetectionResult":
+    def confidence_tier_consistent_with_probability(self) -> FraudDetectionResult:
         p = self.fraud_probability
         if p > 0.8 or p < 0.2:
             expected = "high"
@@ -56,7 +60,7 @@ class FraudDetectionResult(BaseModel):
         return self
 
     @model_validator(mode="after")
-    def is_fraud_consistent_with_probability(self) -> "FraudDetectionResult":
+    def is_fraud_consistent_with_probability(self) -> FraudDetectionResult:
         expected = self.fraud_probability >= FRAUD_THRESHOLD
         if self.is_fraud_predicted != expected:
             raise ValueError(

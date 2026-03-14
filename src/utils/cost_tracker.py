@@ -1,14 +1,16 @@
 """Cost tracking: appends per-call records to cost_log.jsonl and Prometheus."""
+
 from __future__ import annotations
+
 import json
-import os
 import logging
+import os
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Optional
 
 try:
-    from prometheus_client import Counter, Gauge, Histogram
+    from prometheus_client import Counter, Histogram
+
     PROMETHEUS_AVAILABLE = True
 except ImportError:
     PROMETHEUS_AVAILABLE = False
@@ -19,12 +21,14 @@ COST_LOG_PATH = Path(os.getenv("COST_LOG_PATH", "cost_log.jsonl"))
 
 COST_PER_TOKEN: dict[str, dict[str, float]] = {
     "claude-haiku-4-5": {"input": 0.00000025, "output": 0.00000125},
-    "claude-sonnet-4-6": {"input": 0.000003,  "output": 0.000015},
-    "gpt-4o-mini":       {"input": 0.00000015, "output": 0.0000006},
-    "gpt-4o":            {"input": 0.0000025,  "output": 0.00001},
+    "claude-sonnet-4-6": {"input": 0.000003, "output": 0.000015},
+    "gpt-4o-mini": {"input": 0.00000015, "output": 0.0000006},
+    "gpt-4o": {"input": 0.0000025, "output": 0.00001},
 }
 
-COST_BUDGET_PER_TRANSACTION = float(os.getenv("COST_BUDGET_PER_TRANSACTION_USD", "0.08"))
+COST_BUDGET_PER_TRANSACTION = float(
+    os.getenv("COST_BUDGET_PER_TRANSACTION_USD", "0.08")
+)
 
 if PROMETHEUS_AVAILABLE:
     AGENT_TOKEN_COUNTER = Counter(
@@ -64,8 +68,8 @@ def record_agent_call(
     transaction_id: str,
     phase: str,
     duration_seconds: float,
-    confidence: Optional[float] = None,
-    passed: Optional[bool] = None,
+    confidence: float | None = None,
+    passed: bool | None = None,
 ) -> float:
     """Record a single LLM agent call to cost_log.jsonl and Prometheus.
 
@@ -74,7 +78,9 @@ def record_agent_call(
     """
     cost_usd = calculate_cost(model, input_tokens, output_tokens)
     budget_breached = cost_usd > COST_BUDGET_PER_TRANSACTION
-    tier = "strong" if any(s in model for s in ["sonnet", "opus", "gpt-4o:"]) else "cheap"
+    tier = (
+        "strong" if any(s in model for s in ["sonnet", "opus", "gpt-4o:"]) else "cheap"
+    )
 
     record = {
         "timestamp": datetime.now(timezone.utc).isoformat(),

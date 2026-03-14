@@ -1,7 +1,9 @@
 """Input sanitization for text fields before they enter LLM context."""
+
 from __future__ import annotations
-import re
+
 import logging
+import re
 from typing import Final
 
 logger = logging.getLogger(__name__)
@@ -26,6 +28,7 @@ _COMPILED: list[re.Pattern] = [
 
 class InjectionDetectedError(ValueError):
     """Raised when an injection pattern is found in external text."""
+
     def __init__(self, source: str, pattern: str) -> None:
         super().__init__(
             f"Injection pattern detected in '{source}': pattern={pattern!r}"

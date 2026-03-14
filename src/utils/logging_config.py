@@ -1,9 +1,9 @@
 """Logging configuration with secret redaction filter."""
+
 from __future__ import annotations
+
 import logging
 import os
-from typing import Optional
-
 
 _SECRET_KEYS = [
     "OPENAI_API_KEY",

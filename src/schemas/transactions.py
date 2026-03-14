@@ -1,22 +1,26 @@
 """IEEE-CIS Fraud Detection transaction schema."""
+
 from __future__ import annotations
-from typing import Optional, Literal
-from pydantic import BaseModel, field_validator, model_validator
+
+from typing import Literal
+
+from pydantic import BaseModel, field_validator
 
 
 class FraudTransaction(BaseModel):
     """Input transaction from IEEE-CIS dataset."""
+
     TransactionID: str
     TransactionAmt: float
     ProductCD: Literal["W", "H", "C", "S", "R"]
-    card1: Optional[int] = None
-    card4: Optional[Literal["discover", "mastercard", "visa", "american express"]] = None
-    card6: Optional[Literal["credit", "debit"]] = None
-    addr1: Optional[int] = None
-    P_emaildomain: Optional[str] = None
-    R_emaildomain: Optional[str] = None
-    DeviceType: Optional[Literal["desktop", "mobile"]] = None
-    DeviceInfo: Optional[str] = None
+    card1: int | None = None
+    card4: Literal["discover", "mastercard", "visa", "american express"] | None = None
+    card6: Literal["credit", "debit"] | None = None
+    addr1: int | None = None
+    P_emaildomain: str | None = None
+    R_emaildomain: str | None = None
+    DeviceType: Literal["desktop", "mobile"] | None = None
+    DeviceInfo: str | None = None
 
     @field_validator("TransactionAmt")
     @classmethod
@@ -34,7 +38,7 @@ class FraudTransaction(BaseModel):
 
     @field_validator("DeviceInfo", "P_emaildomain", "R_emaildomain", mode="before")
     @classmethod
-    def sanitize_text_field(cls, v: Optional[str]) -> Optional[str]:
+    def sanitize_text_field(cls, v: str | None) -> str | None:
         """Truncate suspiciously long text fields before they reach validation."""
         if v is not None and len(v) > 256:
             return v[:256]

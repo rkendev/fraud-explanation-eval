@@ -1,9 +1,12 @@
 """Shared pytest fixtures."""
+
 from __future__ import annotations
+
 import pytest
-from src.schemas.transactions import FraudTransaction
+
 from src.schemas.detection import FraudDetectionResult, SHAPFeature
-from src.schemas.explanation import ExplanationResult, ExplanationEvalResult
+from src.schemas.explanation import ExplanationResult
+from src.schemas.transactions import FraudTransaction
 
 
 @pytest.fixture
@@ -29,9 +32,15 @@ def high_fraud_detection_result() -> FraudDetectionResult:
         fraud_probability=0.87,
         is_fraud_predicted=True,
         top_shap_features=[
-            SHAPFeature(feature_name="TransactionAmt", shap_value=0.45, feature_value=299.99),
-            SHAPFeature(feature_name="DeviceInfo", shap_value=0.31, feature_value="Windows 10"),
-            SHAPFeature(feature_name="P_emaildomain", shap_value=0.22, feature_value="gmail.com"),
+            SHAPFeature(
+                feature_name="TransactionAmt", shap_value=0.45, feature_value=299.99
+            ),
+            SHAPFeature(
+                feature_name="DeviceInfo", shap_value=0.31, feature_value="Windows 10"
+            ),
+            SHAPFeature(
+                feature_name="P_emaildomain", shap_value=0.22, feature_value="gmail.com"
+            ),
             SHAPFeature(feature_name="card6", shap_value=0.18, feature_value="debit"),
             SHAPFeature(feature_name="addr1", shap_value=-0.12, feature_value=325),
         ],
@@ -48,7 +57,9 @@ def low_confidence_detection_result() -> FraudDetectionResult:
         fraud_probability=0.52,
         is_fraud_predicted=True,
         top_shap_features=[
-            SHAPFeature(feature_name="TransactionAmt", shap_value=0.08, feature_value=50.00),
+            SHAPFeature(
+                feature_name="TransactionAmt", shap_value=0.08, feature_value=50.00
+            ),
             SHAPFeature(feature_name="card4", shap_value=0.06, feature_value="visa"),
         ],
         model_version="1.0.0",
@@ -58,7 +69,9 @@ def low_confidence_detection_result() -> FraudDetectionResult:
 
 
 @pytest.fixture
-def valid_analyst_explanation(high_fraud_detection_result: FraudDetectionResult) -> ExplanationResult:
+def valid_analyst_explanation(
+    high_fraud_detection_result: FraudDetectionResult,
+) -> ExplanationResult:
     return ExplanationResult(
         transaction_id="TX_TEST_001",
         target_audience="analyst",
