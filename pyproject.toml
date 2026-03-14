@@ -13,7 +13,7 @@ shap = "^0.44"
 pandas = "^2.1"
 numpy = "^1.26"
 scikit-learn = "^1.4"
-imbalanced-learn = "^0.12"
+imbalanced-learn = "^0.14.1"
 litellm = "^1.30"
 instructor = "^1.2"
 langgraph = "^0.2"
@@ -23,6 +23,7 @@ slowapi = "^0.1.9"
 prometheus-client = "^0.20"
 python-dotenv = "^1.0"
 tenacity = "^8.2"
+pyarrow = "^23.0.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.1"
@@ -45,7 +46,7 @@ source = ["src"]
 line-length = 100
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
-ignore = ["E501", "UP007"]
+ignore = ["E501", "UP007", "N803", "N806"]
 
 [build-system]
 requires = ["poetry-core"]
