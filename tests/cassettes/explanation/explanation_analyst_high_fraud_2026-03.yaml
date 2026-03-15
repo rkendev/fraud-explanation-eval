@@ -1,0 +1,49 @@
+interactions:
+- request:
+    body: '{"model": "claude-haiku-4-5-20251001", "messages": [{"role": "system",
+      "content": "You are a fraud analysis assistant. Given a fraud detection result
+      with SHAP feature attributions, produce a concise explanation for a fraud analyst.\n\nRULES:\n-
+      You may ONLY reference features in the provided SHAP feature list.\n- State the
+      fraud probability as 87.0%.\n- Explain how each cited feature contributes to the
+      fraud score.\n- Use precise, technical language appropriate for a fraud analyst.\n-
+      Do NOT use customer-facing language like ''your card'' or ''your account''.\n- Keep
+      the explanation under 300 words.\n- In cited_features, list ONLY feature names you
+      actually reference."}, {"role": "user", "content": "Transaction ID: TX_TEST_001\nFraud
+      probability: 87.0%\nPredicted fraud: True\nConfidence tier: high\n\nSHAP feature
+      attributions (top 5 by |shap_value|):\n  - TransactionAmt: shap_value=0.4500,
+      value=299.99\n  - DeviceInfo: shap_value=0.3100, value=Windows 10\n  - P_emaildomain:
+      shap_value=0.2200, value=gmail.com\n  - card6: shap_value=0.1800, value=debit\n  -
+      addr1: shap_value=-0.1200, value=325"}], "max_tokens": 1024}'
+    headers:
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.anthropic.com/v1/messages
+  response:
+    body:
+      string: '{"id": "msg_vcr_analyst_001", "type": "message", "role": "assistant",
+        "content": [{"type": "text", "text": "{\"explanation_text\": \"Transaction
+        TX_TEST_001 has been flagged with a fraud probability of 87.0%. The primary
+        contributing factor is TransactionAmt (SHAP: +0.45), with the transaction
+        amount of $299.99 falling within a high-risk range commonly associated with
+        fraudulent purchases. DeviceInfo (SHAP: +0.31) indicates the transaction
+        originated from a Windows 10 device, a profile consistent with automated
+        fraud patterns. P_emaildomain (SHAP: +0.22) shows gmail.com as the payer
+        email domain, which while common, contributes positively to the fraud score
+        in combination with other signals. The card6 feature (SHAP: +0.18) indicates
+        a debit card was used, which slightly elevates the risk profile. The addr1
+        feature (SHAP: -0.12) at value 325 provides a minor negative contribution,
+        suggesting the billing address region is somewhat less associated with fraud.
+        Overall, the high confidence tier supports the fraud prediction with strong
+        signal convergence across transaction amount, device, and email domain
+        features.\", \"cited_features\": [\"TransactionAmt\", \"DeviceInfo\",
+        \"P_emaildomain\", \"card6\", \"addr1\"], \"uncertainty_disclosure\": null}"}],
+        "model": "claude-haiku-4-5-20251001", "stop_reason": "end_turn",
+        "usage": {"input_tokens": 280, "output_tokens": 195}}'
+    headers:
+      Content-Type:
+      - application/json
+    status:
+      code: 200
+      message: OK
+version: 1

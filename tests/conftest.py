@@ -2,11 +2,29 @@
 
 from __future__ import annotations
 
+import os
+
 import pytest
 
 from src.schemas.detection import FraudDetectionResult, SHAPFeature
 from src.schemas.explanation import ExplanationResult
 from src.schemas.transactions import FraudTransaction
+
+# ---------------------------------------------------------------------------
+# VCR configuration for pytest-recording
+# ---------------------------------------------------------------------------
+
+CASSETTE_DIR = os.path.join(os.path.dirname(__file__), "cassettes", "explanation")
+
+
+@pytest.fixture(scope="module")
+def vcr_config():
+    return {
+        "cassette_library_dir": CASSETTE_DIR,
+        "record_mode": os.getenv("VCR_RECORD_MODE", "none"),
+        "filter_headers": ["authorization", "x-api-key", "anthropic-api-key"],
+        "decode_compressed_response": True,
+    }
 
 
 @pytest.fixture

@@ -63,16 +63,17 @@ class ExplanationResult(BaseModel):
                 )
         return self
 
-    @field_validator("token_cost_usd")
-    @classmethod
-    def cost_must_be_real(cls, v: float) -> float:
-        # Explicitly reject the 0.0 default — cost must be populated from LiteLLM
-        if v == 0.0:
+    @model_validator(mode="after")
+    def cost_must_be_real(self) -> ExplanationResult:
+        # When no LLM call was made, cost 0.0 is acceptable
+        if not self.explanation_generated:
+            return self
+        if self.token_cost_usd == 0.0:
             raise ValueError(
                 "token_cost_usd is 0.0 — this must be populated from actual "
                 "LiteLLM token counts, not left as a default."
             )
-        return v
+        return self
 
 
 class ExplanationEvalResult(BaseModel):

@@ -1,0 +1,41 @@
+interactions:
+- request:
+    body: '{"model": "claude-haiku-4-5-20251001", "messages": [{"role": "system",
+      "content": "You are a customer communication assistant. Given a fraud review
+      summary, produce a clear, reassuring explanation for the cardholder.\n\nRULES:\n-
+      Do NOT state any probability, score, or percentage.\n- Do NOT use technical
+      terminology (SHAP, XGBoost, model, fraud_probability).\n- Use simple, empathetic
+      language.\n- Refer to the transaction status as ''flagged for review'' or ''held
+      for review''.\n- Keep the explanation under 300 words.\n- In cited_features,
+      list ONLY feature names you actually reference."}, {"role": "user", "content":
+      "Transaction TX_TEST_001 has been flagged for review.\n\nFactors considered:\n  -
+      TransactionAmt\n  - DeviceInfo\n  - P_emaildomain"}], "max_tokens": 1024}'
+    headers:
+      Content-Type:
+      - application/json
+    method: POST
+    uri: https://api.anthropic.com/v1/messages
+  response:
+    body:
+      string: '{"id": "msg_vcr_customer_001", "type": "message", "role": "assistant",
+        "content": [{"type": "text", "text": "{\"explanation_text\": \"We wanted
+        to let you know that your recent transaction has been flagged for review as
+        part of our routine security checks. Our system noticed some unusual patterns
+        related to the transaction amount and the device used to make the purchase.
+        We also took a look at the email address associated with the payment. These
+        are standard checks we perform to keep your account safe. If this transaction
+        was made by you, no further action is needed on your part, and the hold will
+        be lifted shortly. If you did not make this transaction, please contact our
+        support team right away so we can help protect your account. We appreciate
+        your patience and understanding as we work to keep your finances
+        secure.\", \"cited_features\": [\"TransactionAmt\", \"DeviceInfo\",
+        \"P_emaildomain\"], \"uncertainty_disclosure\": null}"}],
+        "model": "claude-haiku-4-5-20251001", "stop_reason": "end_turn",
+        "usage": {"input_tokens": 160, "output_tokens": 140}}'
+    headers:
+      Content-Type:
+      - application/json
+    status:
+      code: 200
+      message: OK
+version: 1
