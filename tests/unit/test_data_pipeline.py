@@ -5,6 +5,8 @@ Gate requirement: 20+ tests, data schema validated, no PII in processed files.
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -563,6 +565,10 @@ class TestPreprocessPipeline:
 # ──────────────────────────────────────────────────────────────────
 
 
+DATA_AVAILABLE = Path("data/raw/train_transaction.csv").exists()
+
+
+@pytest.mark.skipif(not DATA_AVAILABLE, reason="IEEE-CIS data not available in CI")
 class TestLoadIeeeCisIntegration:
     def test_loads_real_data_sample(self):
         """Smoke test with real IEEE-CIS data (10-row sample)."""
