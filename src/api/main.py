@@ -1,6 +1,5 @@
 """FastAPI application: SSE streaming, API key auth, rate limiting, Prometheus."""
 
-from __future__ import annotations
 
 import asyncio
 import json
