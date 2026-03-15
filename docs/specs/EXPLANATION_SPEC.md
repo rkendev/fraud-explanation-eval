@@ -3,7 +3,7 @@
 ## Identity
 - Agent: ExplanationAgent
 - Role: Generate grounded natural-language explanation of fraud detection result
-- Model tier: STRONG (claude-sonnet or gpt-4o — synthesis task)
+- Model tier: CHEAP (claude-haiku-4-5-20251001 — structured, bounded output)
 - Max execution time: 15 seconds
 - Two output modes from one schema: analyst | customer
 
