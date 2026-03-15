@@ -114,6 +114,16 @@ class ExplanationAgent:
                         "elapsed": elapsed,
                     },
                 )
+                # Rule 9: Every agent call appends one record — no exceptions
+                record_agent_call(
+                    agent_name="ExplanationAgent",
+                    model=self.model,
+                    input_tokens=0,
+                    output_tokens=0,
+                    transaction_id=detection_result.transaction_id,
+                    phase="phase_3",
+                    duration_seconds=elapsed,
+                )
                 return self._timeout_result(detection_result, target_audience, elapsed)
             raise
 
