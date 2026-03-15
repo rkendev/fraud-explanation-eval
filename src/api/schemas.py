@@ -26,10 +26,14 @@ class PipelineResponse(BaseModel):
             transaction_id=result.transaction.TransactionID,
             completed=result.completed,
             detection_result=(
-                result.detection_result.model_dump() if result.detection_result else None
+                result.detection_result.model_dump()
+                if result.detection_result
+                else None
             ),
             explanation_result=(
-                result.explanation_result.model_dump() if result.explanation_result else None
+                result.explanation_result.model_dump()
+                if result.explanation_result
+                else None
             ),
             eval_result=(
                 result.eval_result.model_dump() if result.eval_result else None

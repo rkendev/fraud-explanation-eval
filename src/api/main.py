@@ -201,7 +201,10 @@ async def _stream_pipeline(
     """Yield SSE events for each pipeline stage."""
 
     from src.agents.eval_agent import EvalAgent
-    from src.agents.explanation_agent import ExplanationAgent, ExplanationHallucinationError
+    from src.agents.explanation_agent import (
+        ExplanationAgent,
+        ExplanationHallucinationError,
+    )
 
     state: GraphState = {
         "transaction": transaction,
@@ -235,7 +238,10 @@ async def _stream_pipeline(
     try:
         explanation_agent = ExplanationAgent()
         updates = await asyncio.to_thread(
-            _node_explain, state, explanation_agent=explanation_agent, target_audience=target_audience
+            _node_explain,
+            state,
+            explanation_agent=explanation_agent,
+            target_audience=target_audience,
         )
         state.update(updates)
         yield _sse("explanation", state["explanation_result"].model_dump_json())

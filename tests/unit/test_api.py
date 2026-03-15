@@ -73,9 +73,15 @@ def mock_detection() -> FraudDetectionResult:
         fraud_probability=0.87,
         is_fraud_predicted=True,
         top_shap_features=[
-            SHAPFeature(feature_name="TransactionAmt", shap_value=0.45, feature_value=299.99),
-            SHAPFeature(feature_name="DeviceInfo", shap_value=0.31, feature_value="Windows 10"),
-            SHAPFeature(feature_name="P_emaildomain", shap_value=0.22, feature_value="gmail.com"),
+            SHAPFeature(
+                feature_name="TransactionAmt", shap_value=0.45, feature_value=299.99
+            ),
+            SHAPFeature(
+                feature_name="DeviceInfo", shap_value=0.31, feature_value="Windows 10"
+            ),
+            SHAPFeature(
+                feature_name="P_emaildomain", shap_value=0.22, feature_value="gmail.com"
+            ),
             SHAPFeature(feature_name="card6", shap_value=0.18, feature_value="debit"),
             SHAPFeature(feature_name="addr1", shap_value=-0.12, feature_value=325),
         ],
@@ -162,7 +168,9 @@ def client_with_model(mock_detection, mock_explanation, mock_eval):
 @pytest.fixture()
 def client_no_model():
     """TestClient with no detector model loaded."""
-    with patch("src.api.main.FraudDetector.load", side_effect=Exception("Model not found")):
+    with patch(
+        "src.api.main.FraudDetector.load", side_effect=Exception("Model not found")
+    ):
         from src.api.main import app
 
         with TestClient(app) as c:
@@ -214,7 +222,9 @@ class TestAuthentication:
     def test_stream_without_api_key_returns_401(
         self, _set_api_key, client_with_model, sample_transaction_data
     ):
-        resp = client_with_model.post("/api/v1/analyze/stream", json=sample_transaction_data)
+        resp = client_with_model.post(
+            "/api/v1/analyze/stream", json=sample_transaction_data
+        )
         assert resp.status_code == 401
 
 
@@ -269,7 +279,9 @@ class TestAnalyzeEndpoint:
         assert data["eval_result"] is not None
         assert data["error"] is None
 
-    def test_analyze_with_customer_audience(self, client_with_model, sample_transaction_data):
+    def test_analyze_with_customer_audience(
+        self, client_with_model, sample_transaction_data
+    ):
         resp = client_with_model.post(
             "/api/v1/analyze?target_audience=customer",
             json=sample_transaction_data,
@@ -326,12 +338,23 @@ class TestStreamEndpoint:
     """POST /api/v1/analyze/stream tests."""
 
     def test_stream_endpoint_returns_sse(
-        self, client_with_model, sample_transaction_data, mock_detection, mock_explanation, mock_eval
+        self,
+        client_with_model,
+        sample_transaction_data,
+        mock_detection,
+        mock_explanation,
+        mock_eval,
     ):
-        with patch("src.api.main._node_sanitize", return_value={}), \
-             patch("src.api.main._node_detect", return_value={"detection_result": mock_detection}), \
-             patch("src.api.main._node_explain", return_value={"explanation_result": mock_explanation}), \
-             patch("src.api.main._node_evaluate", return_value={"eval_result": mock_eval, "completed": True}):
+        with patch("src.api.main._node_sanitize", return_value={}), patch(
+            "src.api.main._node_detect",
+            return_value={"detection_result": mock_detection},
+        ), patch(
+            "src.api.main._node_explain",
+            return_value={"explanation_result": mock_explanation},
+        ), patch(
+            "src.api.main._node_evaluate",
+            return_value={"eval_result": mock_eval, "completed": True},
+        ):
             resp = client_with_model.post(
                 "/api/v1/analyze/stream",
                 json=sample_transaction_data,
@@ -340,12 +363,23 @@ class TestStreamEndpoint:
         assert "text/event-stream" in resp.headers["content-type"]
 
     def test_stream_contains_stage_events(
-        self, client_with_model, sample_transaction_data, mock_detection, mock_explanation, mock_eval
+        self,
+        client_with_model,
+        sample_transaction_data,
+        mock_detection,
+        mock_explanation,
+        mock_eval,
     ):
-        with patch("src.api.main._node_sanitize", return_value={}), \
-             patch("src.api.main._node_detect", return_value={"detection_result": mock_detection}), \
-             patch("src.api.main._node_explain", return_value={"explanation_result": mock_explanation}), \
-             patch("src.api.main._node_evaluate", return_value={"eval_result": mock_eval, "completed": True}):
+        with patch("src.api.main._node_sanitize", return_value={}), patch(
+            "src.api.main._node_detect",
+            return_value={"detection_result": mock_detection},
+        ), patch(
+            "src.api.main._node_explain",
+            return_value={"explanation_result": mock_explanation},
+        ), patch(
+            "src.api.main._node_evaluate",
+            return_value={"eval_result": mock_eval, "completed": True},
+        ):
             resp = client_with_model.post(
                 "/api/v1/analyze/stream",
                 json=sample_transaction_data,
@@ -375,7 +409,9 @@ class TestStreamEndpoint:
 class TestRateLimiting:
     """Rate limiting returns 429 when exceeded."""
 
-    def test_rate_limit_exceeded_returns_429(self, monkeypatch, sample_transaction_data):
+    def test_rate_limit_exceeded_returns_429(
+        self, monkeypatch, sample_transaction_data
+    ):
         """Exceed a very tight rate limit and get 429."""
         monkeypatch.delenv("API_KEY", raising=False)
         reset_api_key_cache()
@@ -383,8 +419,9 @@ class TestRateLimiting:
         mock_detector = MagicMock(spec=FraudDetector)
         mock_detector.model_version = "1.0.0"
 
-        with patch("src.api.main.FraudDetector.load", return_value=mock_detector), \
-             patch("src.api.main.run_pipeline") as mock_run:
+        with patch(
+            "src.api.main.FraudDetector.load", return_value=mock_detector
+        ), patch("src.api.main.run_pipeline") as mock_run:
 
             mock_run.return_value = PipelineResult(
                 transaction=FraudTransaction(

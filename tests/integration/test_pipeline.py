@@ -17,8 +17,7 @@ Tests cover:
 
 from __future__ import annotations
 
-from typing import Any, Literal
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -33,12 +32,10 @@ from src.models.detector import (
     ModelNotLoadedError,
 )
 from src.orchestrator.graph import build_graph, run_pipeline
-from src.orchestrator.state import GraphState, PipelineResult
+from src.orchestrator.state import PipelineResult
 from src.schemas.detection import FraudDetectionResult, SHAPFeature
 from src.schemas.explanation import ExplanationEvalResult, ExplanationResult
 from src.schemas.transactions import FraudTransaction
-from src.security.sanitizer import InjectionDetectedError
-
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -415,9 +412,7 @@ class TestPipelinePartialFailures:
     ):
         detector = _make_mock_detector(high_fraud_detection)
         explainer = MagicMock(spec=ExplanationAgent)
-        explainer.explain.side_effect = ExplanationHallucinationError(
-            ["fake_feature"]
-        )
+        explainer.explain.side_effect = ExplanationHallucinationError(["fake_feature"])
         evaluator = _make_mock_eval_agent(eval_result_passing)
 
         result = run_pipeline(
@@ -429,7 +424,9 @@ class TestPipelinePartialFailures:
 
         assert result.completed is True
         assert result.error_stage == "explain"
-        assert "hallucination" in result.error.lower() or "Hallucination" in result.error
+        assert (
+            "hallucination" in result.error.lower() or "Hallucination" in result.error
+        )
         assert result.detection_result == high_fraud_detection
         assert result.explanation_result is None
 
@@ -637,9 +634,7 @@ class TestGraphStructure:
         compiled = build_graph(detector=detector)
         graph = compiled.get_graph()
         # __start__ should connect to sanitize
-        start_edges = [
-            e.target for e in graph.edges if e.source == "__start__"
-        ]
+        start_edges = [e.target for e in graph.edges if e.source == "__start__"]
         assert "sanitize" in start_edges
 
 
