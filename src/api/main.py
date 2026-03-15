@@ -1,6 +1,5 @@
 """FastAPI application: SSE streaming, API key auth, rate limiting, Prometheus."""
 
-
 import asyncio
 import json
 import os
