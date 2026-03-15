@@ -10,7 +10,7 @@ from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from typing import Literal
 
-from fastapi import Depends, FastAPI, Query, Request
+from fastapi import Body, Depends, FastAPI, Query, Request
 from fastapi.responses import Response
 from prometheus_client import CONTENT_TYPE_LATEST, Counter, Histogram, generate_latest
 from slowapi import Limiter
@@ -142,7 +142,7 @@ async def metrics():
 @limiter.limit(RATE_LIMIT)
 async def analyze(
     request: Request,
-    transaction: FraudTransaction,
+    transaction: FraudTransaction = Body(...),
     target_audience: Literal["analyst", "customer"] = Query(default="analyst"),
     _api_key: str = Depends(verify_api_key),
 ):
@@ -168,7 +168,7 @@ async def analyze(
 @limiter.limit(RATE_LIMIT)
 async def analyze_stream(
     request: Request,
-    transaction: FraudTransaction,
+    transaction: FraudTransaction = Body(...),
     target_audience: Literal["analyst", "customer"] = Query(default="analyst"),
     _api_key: str = Depends(verify_api_key),
 ):

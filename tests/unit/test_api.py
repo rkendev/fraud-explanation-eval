@@ -413,7 +413,7 @@ class TestRateLimiting:
         self, monkeypatch, sample_transaction_data
     ):
         """Exceed a very tight rate limit and get 429."""
-        monkeypatch.delenv("API_KEY", raising=False)
+        monkeypatch.setenv("API_KEY", TEST_API_KEY)
         reset_api_key_cache()
 
         mock_detector = MagicMock(spec=FraudDetector)
@@ -442,6 +442,7 @@ class TestRateLimiting:
                         resp = client.post(
                             "/api/v1/analyze",
                             json=sample_transaction_data,
+                            headers=_auth_headers(),
                         )
                         if resp.status_code == 429:
                             got_429 = True
