@@ -79,7 +79,7 @@ _SCENARIO_DETECTIONS: dict[str, FraudDetectionResult] = {
     ),
     "GS-006": FraudDetectionResult(
         transaction_id="TX_GS006",
-        fraud_probability=0.78,
+        fraud_probability=0.85,
         is_fraud_predicted=True,
         top_shap_features=[
             SHAPFeature(
@@ -126,7 +126,7 @@ _SCENARIO_DETECTIONS: dict[str, FraudDetectionResult] = {
     ),
     "GS-009": FraudDetectionResult(
         transaction_id="TX_GS009",
-        fraud_probability=0.75,
+        fraud_probability=0.85,
         is_fraud_predicted=True,
         top_shap_features=[
             SHAPFeature(
