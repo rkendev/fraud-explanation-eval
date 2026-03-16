@@ -128,6 +128,37 @@ make status
   patterns before entering LLM context. Detected injections produce graceful
   pipeline degradation, not crashes.
 
+## Results
+
+### Cost Monitoring Dashboard
+
+![Grafana Cost Dashboard](docs/results/grafana.png)
+
+*Live cost monitoring dashboard — 6 panels showing total API cost,
+cost per transaction (p50/p95/p99), token usage by agent, model routing
+distribution, and API request rate & latency*
+
+### Results Summary
+
+| Metric | Value |
+|--------|-------|
+| Total tests | 295 passing |
+| Coverage | 97% |
+| Adversarial tests | 40 (injection + data leakage) |
+| Golden scenarios | 6/7 pass (GS-009 fails by design — proves evaluator rejects bad explanations) |
+| Avg cost per transaction | $0.013 |
+| Budget breaches | 0 |
+| Model AUC | 0.78 (50k sample, IEEE-CIS) |
+| API auth | 401 on unauthenticated, 200 on authenticated |
+
+## Running the Pipeline
+
+```bash
+make train SAMPLE=50000
+make explain TX=TX_TEST_001
+make cost-report
+```
+
 ## Tech Stack
 
 - **Detection**: XGBoost + SHAP
