@@ -43,12 +43,12 @@ advance-phase:
 
 # Usage: make train SAMPLE=10000
 train:
-	poetry run python scripts/train_model.py --sample $(or $(SAMPLE),10000)
+	PYTHONPATH=. poetry run python scripts/train_model.py --sample $(or $(SAMPLE),10000)
 
 # Usage: make explain TX=TX_TEST_001
 explain:
 	@if [ -z "$(TX)" ]; then echo "Usage: make explain TX=<transaction_id>"; exit 1; fi
-	poetry run python scripts/run_pipeline.py --tx $(TX)
+	PYTHONPATH=. poetry run python scripts/run_pipeline.py --tx $(TX)
 
 # ── Cost monitoring ───────────────────────────────────────────────────────────
 
