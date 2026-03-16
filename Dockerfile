@@ -4,7 +4,7 @@ WORKDIR /app
 
 # System deps for XGBoost
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libgomp1 curl \
+    libgomp1 curl g++ \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python deps (no poetry in prod image)

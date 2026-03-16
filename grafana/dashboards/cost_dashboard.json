@@ -13,7 +13,7 @@
       "title": "Total API Cost (USD)",
       "type": "stat",
       "gridPos": { "h": 6, "w": 8, "x": 0, "y": 0 },
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "datasource": { "type": "prometheus", "uid": "cfg6t0v89osn4b" },
       "targets": [
         {
           "expr": "sum(transaction_cost_usd_sum)",
@@ -52,7 +52,7 @@
       "title": "Cost per Transaction",
       "type": "timeseries",
       "gridPos": { "h": 6, "w": 8, "x": 8, "y": 0 },
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "datasource": { "type": "prometheus", "uid": "cfg6t0v89osn4b" },
       "targets": [
         {
           "expr": "histogram_quantile(0.50, rate(transaction_cost_usd_bucket[5m]))",
@@ -91,7 +91,7 @@
       "title": "Token Usage by Agent",
       "type": "timeseries",
       "gridPos": { "h": 6, "w": 8, "x": 16, "y": 0 },
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "datasource": { "type": "prometheus", "uid": "cfg6t0v89osn4b" },
       "targets": [
         {
           "expr": "sum by (agent_name) (rate(agent_tokens_total[5m]))",
@@ -120,7 +120,7 @@
       "title": "Budget Breaches",
       "type": "stat",
       "gridPos": { "h": 6, "w": 8, "x": 0, "y": 6 },
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "datasource": { "type": "prometheus", "uid": "cfg6t0v89osn4b" },
       "targets": [
         {
           "expr": "sum(budget_breach_total)",
@@ -158,7 +158,7 @@
       "title": "Model Routing Distribution",
       "type": "piechart",
       "gridPos": { "h": 6, "w": 8, "x": 8, "y": 6 },
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "datasource": { "type": "prometheus", "uid": "cfg6t0v89osn4b" },
       "targets": [
         {
           "expr": "sum by (tier) (model_routing_total)",
@@ -188,7 +188,7 @@
       "title": "API Request Rate & Latency",
       "type": "timeseries",
       "gridPos": { "h": 6, "w": 8, "x": 16, "y": 6 },
-      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "datasource": { "type": "prometheus", "uid": "cfg6t0v89osn4b" },
       "targets": [
         {
           "expr": "sum(rate(api_requests_total[5m]))",

@@ -5,11 +5,13 @@ Gate requirement: 20+ tests, data schema validated, no PII in processed files.
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import numpy as np
 import pandas as pd
 import pytest
+
+
+from pathlib import Path
+DATA_AVAILABLE = Path("data/raw/train_transaction.csv").exists()
 
 from src.data.loader import (
     _clean_categorical,
