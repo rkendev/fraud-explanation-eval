@@ -67,10 +67,10 @@ def sanitize_external_text(text: str, source: str) -> str:
 def sanitize_transaction_text_fields(tx_data: dict) -> dict:
     """Sanitize all text fields in a raw transaction dict.
 
-    Fields checked: DeviceInfo, P_emaildomain, R_emaildomain
+    Fields checked: TransactionID, DeviceInfo, P_emaildomain, R_emaildomain
     Returns a copy with any injection patterns removed or raises.
     """
-    text_fields = ["DeviceInfo", "P_emaildomain", "R_emaildomain"]
+    text_fields = ["TransactionID", "DeviceInfo", "P_emaildomain", "R_emaildomain"]
     cleaned = dict(tx_data)
     for field in text_fields:
         value = cleaned.get(field)

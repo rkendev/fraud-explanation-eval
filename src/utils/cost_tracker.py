@@ -21,6 +21,7 @@ COST_LOG_PATH = Path(os.getenv("COST_LOG_PATH", "cost_log.jsonl"))
 
 COST_PER_TOKEN: dict[str, dict[str, float]] = {
     "claude-haiku-4-5": {"input": 0.00000025, "output": 0.00000125},
+    "claude-haiku-4-5-20251001": {"input": 0.00000025, "output": 0.00000125},
     "claude-sonnet-4-6": {"input": 0.000003, "output": 0.000015},
     "gpt-4o-mini": {"input": 0.00000015, "output": 0.0000006},
     "gpt-4o": {"input": 0.0000025, "output": 0.00001},

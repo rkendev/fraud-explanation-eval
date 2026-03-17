@@ -147,23 +147,12 @@ class EvalAgent:
         input_tokens = usage.prompt_tokens
         output_tokens = usage.completion_tokens
 
-        # Record cost — Rule 9: every agent call logs cost
-        cost_usd = record_agent_call(
-            agent_name="EvalAgent",
-            model=self.model,
-            input_tokens=input_tokens,
-            output_tokens=output_tokens,
-            transaction_id=explanation_result.transaction_id,
-            phase="phase_4",
-            duration_seconds=elapsed,
-        )
-
         # Resolve uncertainty_handling_score
         uncertainty_score = (
             llm_output.uncertainty_handling_score if evaluate_uncertainty else None
         )
 
-        # Calculate overall score
+        # Calculate overall score before recording cost (needed for confidence/passed)
         overall_score = self._calculate_overall_score(
             grounding=llm_output.grounding_score,
             clarity=llm_output.clarity_score,
@@ -174,6 +163,19 @@ class EvalAgent:
 
         passed = overall_score >= 0.70
         failure_reasons = llm_output.failure_reasons if not passed else []
+
+        # Record cost — Rule 9: every agent call logs cost
+        cost_usd = record_agent_call(
+            agent_name="EvalAgent",
+            model=self.model,
+            input_tokens=input_tokens,
+            output_tokens=output_tokens,
+            transaction_id=explanation_result.transaction_id,
+            phase="phase_4",
+            duration_seconds=elapsed,
+            confidence=round(overall_score, 4),
+            passed=passed,
+        )
 
         return ExplanationEvalResult(
             transaction_id=explanation_result.transaction_id,

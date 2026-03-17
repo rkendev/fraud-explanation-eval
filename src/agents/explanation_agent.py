@@ -123,6 +123,7 @@ class ExplanationAgent:
                     transaction_id=detection_result.transaction_id,
                     phase="phase_3",
                     duration_seconds=elapsed,
+                    confidence=detection_result.fraud_probability,
                 )
                 return self._timeout_result(detection_result, target_audience, elapsed)
             raise
@@ -144,6 +145,7 @@ class ExplanationAgent:
             transaction_id=detection_result.transaction_id,
             phase="phase_3",
             duration_seconds=elapsed,
+            confidence=detection_result.fraud_probability,
         )
 
         # Hallucination detection (after cost is logged)
