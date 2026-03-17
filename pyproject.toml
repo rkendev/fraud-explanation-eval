@@ -35,7 +35,7 @@ black = "^24.4"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
-addopts = "--cov=src --cov-report=term-missing --cov-fail-under=70"
+addopts = "--cov=src --cov-report=term-missing --cov-fail-under=85 --cov-branch"
 testpaths = ["tests"]
 
 [tool.coverage.run]
